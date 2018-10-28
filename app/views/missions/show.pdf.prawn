@@ -15,7 +15,7 @@ pdf do
     move_up 6
 
     font_size 7 do
-      transparent(0.9) { text "#{mission} • #{view.l(Date.today, format: :long)}" }
+      transparent(0.9) { text "#{mission.project} • #{mission} • #{view.l(Date.today, format: :long)}" }
       move_cursor_to inner_height
       text mission.user.full_name, align: :right
       transparent(0.9) { text "#{mission.user.phone} • #{mission.user.email}", align: :right }
