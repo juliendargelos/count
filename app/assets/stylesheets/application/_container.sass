@@ -1,0 +1,115 @@
+.container
+  $container-width: 1000px
+  $container-margin: 30px
+  $container-sizes: (medium: 800px, small: 400px)
+
+  width: 100%
+  max-width: $container-width + 2*$container-margin
+  margin:
+    left: auto
+    right: auto
+  padding:
+    left: $container-margin
+    right: $container-margin
+  box-sizing: border-box
+  position: relative
+  transition: .2s
+
+  @each $size, $width in $container-sizes
+    &--#{$size}
+      max-width: $width + 2*$container-margin
+
+  &--center
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+    > *
+      flex-grow: 0
+      flex-shrink: 0
+
+  &--no-margins
+    padding:
+      left: 0
+      right: 0
+
+  &--margins-vertical
+    padding:
+      top: $container-margin
+      bottom: $container-margin
+
+  &--flex
+    &, &--top, &--bottom
+      display: flex
+      align-items: center
+
+    &--top
+      align-items: start
+
+    &--top
+      align-items: end
+
+  &--columns
+    &, &--center, &--bottom
+      width: calc(100% + 30px)
+      margin:
+        left: -15px
+        right: -15px
+      display: flex
+      align-items: start
+      > *
+        flex-grow: 1
+        flex-shrink: 1
+        flex-basis: 0
+        margin:
+          left: 15px
+          right: 15px
+
+    &--center
+      align-items: center
+
+    &--bottom
+      align-items: end
+
+  &__column
+    flex-grow: 1
+    flex-shrink: 1
+    @for $n from 1 through 12
+      &--#{$n}
+        width: $n/12*100%
+        flex-basis: $n/12*100%
+
+  &--full-width
+    max-width: none
+
+  &--full-height
+    min-height: 100vh
+
+  &--full-screen
+    @extend .container--full-width
+    @extend .container--full-height
+
+  &--actions
+    &, &--top
+      max-width: none
+      text-align: right
+      padding:
+        top: 30px
+        bottom: 0
+        left: 0
+        right: 0
+
+    &--top
+      padding:
+        top: 0
+        bottom: 30px
+
+    &--left
+      text-align: left
+
+    > *:not(:first-child)
+      margin-left: 10px
+
+  &--minimized
+    transform: scale(.9)

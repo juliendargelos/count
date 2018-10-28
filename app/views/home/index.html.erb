@@ -1,0 +1,13 @@
+<div class="box-list">
+  <% @months.each do |date, missions| %>
+    <div class="container--actions--top container--actions--left">
+      <span class="label"><%= date.strftime "%B %Y" %></span>
+      <span class="price" style="float: right">
+        <%= missions.taxed_price %>
+        <span class="price__excl"><%= missions.price %></span>
+      </span>
+    </div>
+
+    <%= render missions %>
+  <% end %>
+</div>

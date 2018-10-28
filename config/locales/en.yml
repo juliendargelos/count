@@ -1,0 +1,21 @@
+en:
+  activerecord:
+    errors:
+      models:
+        session:
+          invalid: Wrong email or password
+    durationable:
+      year:
+        one: year
+        other: years
+      month:
+        one: month
+        other: months
+      day:
+        one: day
+        other: days
+
+  helpers:
+    submit:
+      session:
+        create: Login

@@ -1,0 +1,30 @@
+<div class="container--actions--top container--actions--left">
+  <%= link_to mission_path(@mission), class: :label do %>
+    <%= i 'arrow-left' %>&nbsp;&nbsp;Back to mission
+  <% end %>
+</div>
+
+<div class="container container--columns container--no-margins">
+  <div class="box animation animation--fade-in-up">
+    <div class="box__content">
+      <h1 class="box__title">Edit mission</h1>
+    </div>
+    <div class="box__content">
+      <%= render 'form', mission: @mission %>
+    </div>
+  </div>
+
+  <div class="box-list">
+    <div class="box-list__item">
+      <div id="pricings" data-frame-src="<%= pricings_path(mission_id: @mission.id) %>">
+
+      </div>
+    </div>
+
+    <div class="box-list__item">
+      <div id="taxes" data-frame-src="<%= taxes_path(mission_id: @mission.id) %>" data-frame-delay="200">
+
+      </div>
+    </div>
+  </div>
+</div>

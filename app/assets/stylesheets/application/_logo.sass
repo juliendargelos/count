@@ -1,0 +1,12 @@
+.logo
+  width: 30px
+  height: 30px
+  display: inline-block
+
+  &--large
+    width: 70px
+    height: 70px
+
+  @each $name, $color in (white: $white, primary: $primary)
+    &--#{$name} use
+      fill: $color

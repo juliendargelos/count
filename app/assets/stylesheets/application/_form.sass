@@ -1,0 +1,188 @@
+.form
+  $field-height: 40px
+  $field-border-width: 2px
+  $input-font-size: 14px
+  $label-font-size: 10px
+  $label-scale: .8
+
+  &__field
+    margin-bottom: 30px
+    position: relative
+
+    &--no-margin
+      margin-bottom: 0
+
+    &--text#{&}--margin-fix
+      margin-top: 19px
+
+    &--date
+      min-width: 300px
+
+  &__label
+    height: $field-height
+    top: 0
+    left: 0
+    display: block
+    position: absolute
+    font-weight: bold
+    font-size: $label-font-size
+    text-transform: uppercase
+    letter-spacing: .05em
+    display: flex
+    align-items: center
+    transition: .15s
+    color: $medium-grey
+
+    &--standalone
+      position: relative
+
+  &__input
+    background-color: transparent
+    width: 100%
+    height: $label-font-size*$label-scale + $field-height - $label-font-size*$label-scale
+    padding: 0
+      top: $label-font-size*$label-scale
+    border: none
+    border-bottom: $field-border-width solid $light-grey
+    border-radius: 0
+    box-shadow: inset 1000px 0 0 $white
+    box-sizing: border-box
+    +prefix((appearance: none))
+    outline: none
+    resize: none
+    display: block
+    font-family: sans-serif
+    font-size: $input-font-size
+    color: rgba($grey, 0)
+    transition: .2s, height 0
+
+    &--code
+      font-family: monospace
+
+    &--integer, &--float
+      +prefix
+        &::#{prefix(inner-spin-button)}, &::#{prefix(outer-spin-button)}
+          +prefix-only(webkit)
+            margin: 0
+
+          +prefix-only(moz)
+            +prefix((appearance: textfield))
+
+          +prefix-except(moz)
+            +prefix((appearance: none))
+
+    @at-root select#{&}
+      min-height: 33px
+      background:
+        image: image-url('arrow-down.svg')
+        position: right 22px
+        repeat: no-repeat
+      box-shadow: none
+      padding-right: 22px
+
+    &--text
+      height: $field-height - $label-font-size*$label-scale - ($field-height - $input-font-size)/2 + 6px
+      padding-top: 0
+      top: $label-font-size*$label-scale + 10px
+      margin-bottom: $label-font-size*$label-scale + 10px
+      position: relative
+
+    &:focus
+      border-bottom-color: $secondary
+
+    &:not(:placeholder-shown), &:focus, &--readonly
+      color: $grey
+
+    &--padding
+      &--right
+        padding-right: 20px
+
+      &--left
+        padding-left: 20px
+
+  &__group--select + &__label,
+  &__input--readonly + &__label,
+  &__input--select + &__label,
+  &__input:focus + &__label,
+  &__input:not(:placeholder-shown) + &__label
+    transform: scale($label-scale) translateY(#{-($field-height - $label-font-size)/2})
+    transform-origin: 0 0
+
+  &__input:focus + &__label
+    color: $secondary
+
+  &__association-list
+    background: $white
+    width: 100%
+    border-radius: 0 0 6px 6px
+    box-shadow: 0 4px 8px rgba($black, .1)
+    overflow: hidden
+    display: none
+    position: absolute
+
+  &__association:not(&__association--filled) &__association-input:focus ~ &__association-list
+    display: block
+
+  &__association-item
+    padding: 15px
+    color: $grey
+    cursor: pointer
+
+    &--selected
+      background-color: $secondary
+      color: $white
+
+    &--hidden
+      display: none
+
+    &:not(&--selected):hover
+      background-color: rgba($thin-grey, .4)
+
+  &__error
+    opacity: 0
+    max-height: 0
+    color: $danger
+    margin-top: 5px
+    font-size: 12px
+    animation: form__error .8s 1 forwards
+
+    &--center
+      text-align: center
+
+  &__group
+    width: calc(100% + 15px)
+    margin:
+      left: -7.5px
+      right: -7.5px
+    align-items: start
+    justify-content: start
+    display: flex
+    flex-wrap: wrap
+
+  &__group &__field, &__group > &__input
+    flex-grow: 1
+    flex-shrink: 1
+    flex-basis: 0
+    margin:
+      left: 7.5px
+      right: 7.5px
+
+  &__submit
+    @extend .button
+    @extend .button--primary
+
+    &--minimal
+      @extend .button--round
+
+@keyframes form__error
+  0%
+    opacity: 0
+    max-height: 0
+
+  20%
+    opacity: 0
+    max-height: 12px
+
+  100%
+    opacity: 1
+    max-height: none

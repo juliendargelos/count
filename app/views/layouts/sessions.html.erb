@@ -1,0 +1,8 @@
+<%= layout 'base', header: true do %>
+  <main class="container container--full-screen container--no-margins container--margins-vertical container--center animation animation--fade-in animation--now">
+    <canvas class="decoration decoration--background"></canvas>
+    <div class="<%= container %>">
+      <%= content { yield } %>
+    </div>
+  </main>
+<% end %>

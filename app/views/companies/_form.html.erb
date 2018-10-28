@@ -1,0 +1,4 @@
+<%= form_view_for company do |f| %>
+  <%= f.input :name %>
+  <%= f.input :notes, partial: :markdown if company.persisted? %>
+<% end %>

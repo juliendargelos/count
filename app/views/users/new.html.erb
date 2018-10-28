@@ -1,0 +1,14 @@
+<% container :medium %>
+
+<div class="box animation--fade-in-up <%= 'animation--now' if frame? %>">
+  <div class="box__content">
+    <% if User.count != 0 %>
+      <h1 class="box__title">New user</h1>
+    <% else %>
+      <h1 class="box__title box__title--center">Create your account</h1>
+    <% end %>
+  </div>
+  <div class="box__content">
+    <%= render 'form', user: @user %>
+  </div>
+</div>

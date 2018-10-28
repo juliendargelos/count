@@ -1,0 +1,15 @@
+{
+  "name": "Count",
+  "description": "Personal Rails application for managing freelance projects.",
+  "repository": "https://github.com/juliendargelos/count",
+  "logo": "https://cdn.rawgit.com/juliendargelos/count/d2499c93/app/assets/images/logo.svg",
+  "keywords": ["count", "rails"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}

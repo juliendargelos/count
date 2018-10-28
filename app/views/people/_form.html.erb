@@ -1,0 +1,25 @@
+<%= simple_form_for person do |f| %>
+  <div class="container container--columns container--no-margins">
+    <fieldset>
+      <div class="form__group">
+        <%= f.input :first_name %>
+        <%= f.input :last_name %>
+      </div>
+      <%= f.input :email %>
+      <%= f.input :phone %>
+      <%= render 'application/inputs/association', builder: f, attribute: :company %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.input :country, as: :string %>
+      <%= f.input :city %>
+      <%= f.input :zipcode %>
+      <%= f.input :address %>
+    </fieldset>
+  </div>
+
+  <div class="actions">
+    <%= destroy_button person if person.persisted? %>
+    <%= f.button :submit %>
+  </div>
+<% end %>

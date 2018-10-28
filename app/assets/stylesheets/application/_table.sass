@@ -1,0 +1,37 @@
+.table
+  width: 100%
+
+  &__row
+    &:not(&--footer):not(&--no-border)
+      border-bottom: 3px solid $light-grey
+
+  &__cell
+    text-align: left
+    padding: 15px 0
+    color: $grey
+
+    &--header
+      font-size: 10px
+      font-weight: bold
+      letter-spacing: .1em
+      text-transform: uppercase
+
+    &--actions
+      z-index: 2
+      position: relative
+
+    &--spacing
+      &--left
+        padding-left: 7.5px
+
+      &--right
+        padding-right: 7.5px
+
+    &--no-margin
+      padding:
+        top: 0
+        bottom: 0
+
+    &--align
+      &--bottom
+        vertical-align: bottom

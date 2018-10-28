@@ -1,0 +1,101 @@
+<%
+  label ||= false
+  form_id = "#{task.persisted? ? :edit : :new}_task#{'_' + task.id.to_s if task.persisted?}"
+  input_id_prefix = "task#{"_#{task.id}" if task.persisted?}"
+%>
+
+<tr class="task table__row table__row--no-border">
+  <%= simple_form_for task do |f| %>
+    <%= hidden_field_tag :utf8, '✓', form: form_id %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token, form: form_id %>
+    <%= hidden_field_tag :_method, task.persisted? ? :patch : :post, form: form_id %>
+    <%= f.hidden_field :id, form: form_id %>
+    <%= f.hidden_field :mission_id, form: form_id %>
+
+    <td class="table__cell table__cell--align--bottom"><%= f.input :name, { as: :text, wrapper_html: { class: 'form__field--no-margin form__field--margin-fix' }, input_html: { class: 'form__input--padding--right', form: form_id, autocomplete: :off } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom table__cell--spacing--right"><%= f.association :pricing, { collection: task.mission.pricings, selected: task.persisted? ? task.pricing_id : task.mission.pricings.default.id, required: false, include_blank: false, wrapper_html: { class: 'form__field--no-margin' }, input_html: { form: form_id, id: "#{input_id_prefix}_pricing" } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom table__cell--spacing--left" width="70"><%= f.input :difficulty, { wrapper_html: {class: 'form__field--no-margin' }, input_html: { form: form_id, id: "#{input_id_prefix}_difficulty", min: 0, max: 10, autocomplete: :off } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom" width="115"><%= f.input :minimum_duration, { wrapper_html: {class: 'form__field--no-margin' }, input_html: { form: form_id, id: "#{input_id_prefix}_minimum_duration", autocomplete: :off, spellcheck: :false, autocapitalize: :off, autocorrect: :off } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom" width="115"><%= f.input :maximum_duration, { wrapper_html: {class: 'form__field--no-margin' }, input_html: { form: form_id, id: "#{input_id_prefix}_maximum_duration", autocomplete: :off, spellcheck: :false, autocapitalize: :off, autocorrect: :off } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom" width="80"><%= f.input :duration, { wrapper_html: {class: 'form__field--no-margin' }, input_html: { form: form_id, readonly: true, id: "#{input_id_prefix}_duration" } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom" width="80"><%= f.input :price, { wrapper_html: {class: 'form__field--no-margin' }, input_html: { form: form_id, readonly: true, id: "#{input_id_prefix}_price" } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--align--bottom table__cell--actions">
+      <div class="actions">
+        <% if task.persisted? %>
+          <%= destroy_button task, minimal: true %>
+        <% end %>
+        <%= f.button :button, i(task.persisted? ? :check : :plus), type: :submit, class: 'form__submit--minimal', form: form_id %>
+      </div>
+    </td>
+  <% end %>
+</tr>
+
+<script>
+  (() => {
+    var input = name => document.getElementById('<%= input_id_prefix %>_' + name)
+
+    var delay = 200
+    var timeout = {}
+
+    var watch = (input, callback) => {
+      var instantCallback = event => {
+        clearTimeout(timeout[input.id])
+        callback.call(input, event)
+      }
+
+      var delayedCallback = event => {
+        clearTimeout(timeout[input.id])
+        var value = input.value
+        timeout[input.id] = setTimeout(() => {
+          if(input.value !== value) callback.call(input, event)
+        }, delay)
+      }
+
+      input.addEventListener('change', instantCallback)
+      input.addEventListener('keydown', delayedCallback)
+      input.addEventListener('paste', delayedCallback)
+    }
+
+    var duration = input('duration')
+    var price = input('price')
+
+    var update = () => {
+      <% if task.mission&.persisted? %>
+        var mission = document.querySelector(<%= "#mission-#{task.mission.id}".to_json.html_safe %>)
+        var missionActualDuration = mission.querySelector('.mission__actual-duration')
+        var missionEstimatedEndingDate = mission.querySelector('.mission__estimated-ending-date')
+        var missionPrice = mission.querySelector('.mission__price')
+        var missionTaxedPrice = mission.querySelector('.mission__taxed-price')
+
+        var request = new Request(<%= compute_mission_path(task.mission).to_json.html_safe %>, 'post')
+        var parameters = new Parameters()
+        parameters.form = document.getElementById(<%= form_id.to_json.html_safe %>)
+        request.data.authenticity_token = <%= form_authenticity_token.to_json.html_safe %>
+        request.data.mission = {tasks_attributes: [parameters.task]}
+
+        request.send().then(response => {
+          var data = response.json
+          missionActualDuration.textContent = data.actual_duration
+          if(missionEstimatedEndingDate) missionEstimatedEndingDate.textContent = data.estimated_ending_date
+          missionPrice.textContent = data.price
+          missionTaxedPrice.textContent = data.taxed_price
+          duration.value = data.task.duration
+          price.value = data.task.price
+        })
+      <% else %>
+        var request = new Request(<%= compute_tasks_path.to_json.html_safe %>, 'post')
+        request.data.form = document.getElementById(<%= form_id.to_json.html_safe %>)
+        request.send().then(response => {
+          var data = response.json
+          duration.value = data.duration
+          price.value = data.price
+        })
+      <% end %>
+    }
+
+    watch(input('difficulty'), update)
+    watch(input('pricing'), update)
+    watch(input('minimum_duration'), update)
+    watch(input('maximum_duration'), update)
+  })()
+</script>

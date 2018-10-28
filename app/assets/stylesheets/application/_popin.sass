@@ -1,0 +1,72 @@
+.popin
+  background: rgba($white, .5)
+  width: 100%
+  height: 100%
+  top: 0
+  left: 0
+  overflow: auto
+  position: fixed
+  transform: scale(0)
+  opacity: 0
+  z-index: 1000
+  animation: popin--close .2s reverse
+  +prefix((backdrop-filter: blur(10px)))
+
+  &__box
+    width: 100%
+    opacity: 0
+    transform: translateY(30px)
+    animation: popin__box--close .2s reverse
+
+  &__actions
+    position: relative
+    z-index: 2
+    opacity: 0
+    transition: .3s
+
+  &--open
+    transform: none
+    opacity: 1
+    animation: popin--open .2s
+
+  &--open &__box
+    opacity: 1
+    transform: translateY(0)
+    animation: popin__box--open .3s
+
+  &--open &__actions
+    opacity: 1
+
+  &--center &__title, &--center &__content
+    text-align: center
+
+
+=popin-keyframes
+  0%
+    transform: scale(0)
+    opacity: 0
+
+  0.01%
+    transform: scale(1)
+    opacity: 0
+
+  100%
+    transform: scale(1)
+    opacity: 1
+
+@each $keyframes in open, close
+  @keyframes popin--#{$keyframes}
+    +popin-keyframes
+
+=popin-box-keyframes
+  from
+    transform: translateY(30px)
+    opacity: 0
+
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@each $keyframes in open, close
+  @keyframes popin__box--#{$keyframes}
+    +popin-box-keyframes

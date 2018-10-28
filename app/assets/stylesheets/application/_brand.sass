@@ -1,0 +1,26 @@
+.brand
+  display: inline-block
+
+  &__logo, &__name
+    display: inline-block
+    vertical-align: middle
+
+  &__logo
+    &:not(:last-child)
+      margin-right: 5px
+
+  &__name
+    font-size: 10px
+    font-weight: bold
+    text-transform: uppercase
+    letter-spacing: .15em
+
+    &--white
+      color: $white
+
+    &--primary
+      color: $primary
+
+  &--vertical &__logo, &--vertical &__name
+    display: block
+    text-align: center

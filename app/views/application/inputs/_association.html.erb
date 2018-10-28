@@ -1,0 +1,29 @@
+<%
+  builder ||= nil
+  raise 'Association input needs a builder parameter (ActionView::Helpers::FormBuilder)' if builder.blank?
+
+  attribute ||= nil
+  raise 'Association input needs an attribute parameter' if attribute.blank?
+
+  foreign_key ||= "#{attribute}_id"
+  record = builder.object.try attribute
+  collection ||= nil
+  by ||= :to_s
+
+  if collection.nil?
+    model ||= attribute.to_s.classify.constantize
+    scope ||= :all
+    collection = model.send scope
+  end
+%>
+
+<div class="form__field form__field--association form__association">
+  <%= builder.hidden_field foreign_key, class: 'form__association-key' %>
+  <%= text_field_tag nil, record.send(by), class: 'form__input form__input--string form__association-input', placeholder: ' ' %>
+  <%= label_tag attribute, nil, class: :form__label %>
+  <ul class="form__association-list">
+    <% collection.each do |record| %>
+      <li class="form__association-item" data-value="<%= record.id %>"><%= record.send by %></li>
+    <% end %>
+  </ul>
+</div>

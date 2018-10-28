@@ -1,0 +1,15 @@
+<%= form_view_for user do |f| %>
+  <div class="container container--columns container--no-margins">
+    <fieldset>
+      <%= f.input :first_name %>
+      <%= f.input :last_name %>
+      <%= f.input :email %>
+    </fieldset>
+
+    <fieldset>
+      <%= f.input :phone %>
+      <%= f.input :password %>
+      <%= f.input :password_confirmation %>
+    </fieldset>
+  </div>
+<% end %>

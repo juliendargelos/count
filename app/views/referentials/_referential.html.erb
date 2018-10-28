@@ -1,0 +1,23 @@
+<%
+  label ||= false
+  form_id = "#{referential.persisted? ? :edit : :new}_referential#{'_' + referential.id.to_s if referential.persisted?}"
+%>
+
+<tr class="table__row table__row--no-border">
+  <%= simple_form_for referential do |f| %>
+    <%= hidden_field_tag :utf8, '✓', form: form_id %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token, form: form_id %>
+    <%= hidden_field_tag :_method, referential.persisted? ? :patch : :post, form: form_id %>
+
+    <td class="table__cell"><%= f.input :man_day_duration, { wrapper_html: { class: 'form__field--no-margin' }, input_html: { form: form_id } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell"><%= f.input :work_per_day_duration, { wrapper_html: { class: 'form__field--no-margin' }, input_html: { form: form_id } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--actions">
+      <div class="actions">
+        <% if referential.persisted? %>
+          <%= destroy_button referential, minimal: true %>
+        <% end %>
+        <%= f.button :button, i(referential.persisted? ? :check : :plus), class: 'form__submit--minimal', form: form_id %>
+      </div>
+    </td>
+  <% end %>
+</tr>

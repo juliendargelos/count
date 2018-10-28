@@ -1,0 +1,15 @@
+<%
+  record ||= nil
+  raise 'Form partial needs a record parameter (ActiveRecord::Base)' unless record.is_a? ActiveRecord::Base
+
+  content ||= nil
+%>
+
+<%= simple_form_for record do |f| %>
+  <%= capture { content.call f } if content.is_a? Proc %>
+
+  <div class="actions">
+    <%= destroy_button record if record.persisted? %>
+    <%= f.button :submit %>
+  </div>
+<% end %>

@@ -1,0 +1,82 @@
+<%
+  finishable ||= false
+%>
+
+<div class="mission box-list__item" id="mission<%= "-#{mission.id}" if mission.persisted? %>">
+  <div class="box animation--fade-in-up">
+    <div class="box__content">
+      <div class="container container--flex container--no-margins container--full-width">
+        <h2 class="mission__name box__title">
+          <%= link_to mission, mission %>
+        </h2>
+        <div class="actions box__actions">
+          <%= destroy_button mission, minimal: true %>
+          <%= edit_button mission, minimal: true %>
+          <%= button_link_to :pdf, public_mission_path(uuid: mission.uuid, format: :pdf), :secondary, :round, icon: 'file-pdf' %>
+        </div>
+      </div>
+    </div>
+    <%= link_to mission_path(mission), class: :box__content do %>
+      <div class="container container--columns container--no-margins">
+        <span class="container container--full-width container--flex--top container--no-margins">
+          <span style="margin-right: 10px"><%= i :user %></span>
+          <span>
+            <span class="label"><%= mission.referent.company.presence || 'No company' %></span><br>
+            <span class="mission__referent-full-name"><%= mission.referent.full_name %></span>
+          </span>
+        </span>
+
+        <span class="container container--full-width container--flex--top container--no-margins">
+          <span style="margin-right: 10px"><%= i :calendar %></span>
+          <span style="margin-right: 20px">
+            <span class="label">Beginning</span><br>
+            <span class="mission__beggining-date" style="white-space: nowrap"><%= l mission.beginning_date.to_date, format: :long %></span>
+          </span>
+        </span>
+
+        <span class="container container--full-width container--flex--top container--no-margins">
+          <span style="margin-right: 10px"><%= i :calendar %></span>
+          <span>
+            <% if mission.ended? %>
+              <span class="label" style="white-space: nowrap">Ended the</span><br>
+              <span style="white-space: nowrap" class="mission__ending-date"><%= l mission.ending_date.to_date, format: :long %></span>
+            <% else %>
+              <span class="label" style="white-space: nowrap">Should end</span><br>
+              <span style="white-space: nowrap" class="mission__estimated-ending-date"><%= l mission.estimated_ending_date.to_date, format: :long %></span>
+            <% end %>
+          </span>
+        </span>
+
+        <span class="container container--full-width container--flex--top container--no-margins">
+          <span style="margin-right: 10px"><%= i :clock %></span>
+          <span>
+            <span class="label">Duration</span><br>
+            <span class="mission__actual-duration"><%= mission.actual_duration.presence || 'Unknown' %></span>
+          </span>
+        </span>
+
+        <span class="price">
+          <span class="mission__taxed-price"><%= mission.taxed_price %></span>
+          <span class="price__excl mission__price"><%= mission.price %></span>
+        </span>
+      </div>
+    <% end %>
+
+    <% if finishable %>
+      <div class="box__content">
+        <%= simple_form_for mission, url: mission_path(@mission, show: true) do |f| %>
+          <div class="actions">
+            <% if mission.ended? %>
+              <%= f.input :ending_date, as: :hidden, required: false, input_html: { value: nil }, wrapper_html: { class: 'form__field--no-margin' } %>
+              <%= f.button :submit, 'Mark as not finished', class: 'button--danger' %>
+            <% else %>
+              <%= f.input :ending_date, wrapper_html: { class: 'form__field--no-margin' } %>
+              <%= f.button :submit, 'Mark as finished' %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>

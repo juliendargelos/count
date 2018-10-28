@@ -1,0 +1,16 @@
+<p class="paragraph">
+  <%= Time.now.evening? ? 'Bonsoir' : 'Bonjour' %> <%= @mission.referent.first_name %>,
+</p>
+
+<p class="paragraph">
+  Mon devis pour la mission <%= @mission.name %> est accessible depuis le lien ci-dessous. Mes informations de contact y apparaissent également.
+</p>
+
+<p class="paragraph paragraph--centered">
+  <%= link_to 'Accéder au devis', public_mission_path(uuid: @mission.uuid, format: :pdf), class: 'button button--pdf' %>
+</p>
+
+<p class="paragraph paragraph--centered">
+  À bientôt !<br>
+  <%= mission.user.first_name %>
+</p>

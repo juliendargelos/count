@@ -1,0 +1,26 @@
+.notification
+  background-color: $white
+  padding: 20px 16px 20px 28px
+  border-radius: 14px
+  color: $black
+  box-shadow: 0 10px 30px rgba($black, .07)
+  position: relative
+  overflow: hidden
+
+  &::before
+    content: ''
+    background-color: $light-grey
+    width: 5px
+    height: calc(100% - 22px)
+    top: 11px
+    left: 11px
+    border-radius: 10px
+    box-sizing: border-box
+    position: absolute
+    display: block
+
+  @each $type, $color in (success: $primary, info: $secondary, warning: $warning, error: $danger)
+    &--#{$type}
+      color: $color
+      &::before
+        background-color: $color

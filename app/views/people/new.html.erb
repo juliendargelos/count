@@ -1,0 +1,10 @@
+<% container :medium %>
+
+<div class="box animation animation--fade-in-up <%= 'animation--now' if frame? %>">
+  <div class="box__content">
+    <h1 class="box__title">New person</h1>
+  </div>
+  <div class="box__content">
+    <%= render 'form', person: @person %>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<%
+  attribute ||= nil
+  raise 'Markdown input needs an attribute parameter' if attribute.blank?
+
+  builder ||= nil
+  record ||= nil
+  raise 'Markdown input needs either a builder (ActionView::Helpers::FormBuilder) or record (ActiveRecord::Base) parameter' if builder.blank? && record.blank?
+
+  url ||= nil
+
+  record = builder.object if builder.present?
+  model_name = record.class.to_s.underscore
+  class_name ||= "#{model_name.split('_').join '-'}-#{attribute.to_s.split('_').join '-'}"
+  input_id = "#{model_name}_#{attribute}"
+%>
+
+<%= content_tag :div, class: class_name, title: 'Double-click to edit', data: { toggle: ".#{class_name}", 'toggle-event': :dblclick, focus: "##{input_id}", 'focus-event': :dblclick } do %>
+  <% if record.send(attribute).present? %>
+    <%= markdown record.send(attribute) %>
+  <% else %>
+    <p class="paragraph paragraph--muted paragraph--unselectable">No <%= attribute.to_s.humanize.downcase %></p>
+  <% end %>
+<% end %>
+
+<%= content_tag :div, class: class_name, hidden: :hidden do %>
+  <% if builder %>
+    <%= builder.input attribute, input_html: { class: 'form__input--code' }, label: false, required: false %>
+  <% else %>
+    <%= simple_form_for record, url: url do |f| %>
+      <%= f.input attribute, input_html: { class: 'form__input--code' }, label: false, required: false %>
+
+      <div class="actions">
+        <%= content_tag :span, 'Cancel', class: :button, data: { toggle: ".#{class_name}" } %>
+        <%= f.button :submit, "Save #{attribute.to_s.humanize.downcase}" %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

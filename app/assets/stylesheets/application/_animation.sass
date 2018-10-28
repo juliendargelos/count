@@ -1,0 +1,35 @@
+.animation
+  &--fade-in
+    opacity: 0
+    animation: animation--fade .4s .2s 1 forwards
+
+  &--fade-out
+    opacity: 1
+    animation: animation--fade .4s .2s 1 reverse forwards
+
+  &--fade-in-up
+    opacity: 0
+    animation: animation--fade .7s .2s 1 forwards, animation--in-up .7s 1
+
+  &--now
+    animation-delay: 0
+
+  &--delay
+    @for $n from 1 through 10
+      &--#{$n}
+        $delay: .2s + $n*.1s
+        animation-delay: $delay, $delay
+
+@keyframes animation--fade
+  from
+    opacity: 0
+
+  to
+    opacity: 1
+
+@keyframes animation--in-up
+  from
+    transform: translateY(20px)
+
+  to
+    transform: translateY(0)

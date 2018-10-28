@@ -1,0 +1,24 @@
+<%
+  label ||= false
+  form_id = "#{pricing.persisted? ? :edit : :new}_pricing#{'_' + pricing.id.to_s if pricing.persisted?}"
+%>
+
+<tr class="table__row table__row--no-border">
+  <%= simple_form_for pricing do |f| %>
+    <%= hidden_field_tag :utf8, '✓', form: form_id %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token, form: form_id %>
+    <%= hidden_field_tag :_method, pricing.persisted? ? :patch : :post, form: form_id %>
+    <%= f.hidden_field :mission_id, form: form_id %>
+
+    <td class="table__cell"><%= f.input :name, { wrapper_html: { class: 'form__field--no-margin' }, input_html: { form: form_id } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell"><%= f.input :man_day_price, { wrapper_html: {class: 'form__field--no-margin' }, input_html: { form: form_id } }.merge(label ? {} : { label: false }) %></td>
+    <td class="table__cell table__cell--actions">
+      <div class="actions">
+        <% if pricing.persisted? %>
+          <%= destroy_button pricing, minimal: true %>
+        <% end %>
+        <%= f.button :button, i(pricing.persisted? ? :check : :plus), type: :submit, class: 'form__submit--minimal', form: form_id %>
+      </div>
+    </td>
+  <% end %>
+</tr>

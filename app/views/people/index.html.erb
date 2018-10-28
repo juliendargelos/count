@@ -1,0 +1,40 @@
+<div class="container container--columns container--no-margins">
+  <div class="container__column container__column--6">
+    <table class="table">
+      <thead class="table__header">
+        <tr class="table__row table__row--header">
+          <th class="table__cell table__cell--header">Name</th>
+          <th class="table__cell table__cell--header">Company</th>
+          <th class="table__cell"></th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <% @people.each do |person| %>
+          <tr class="table__row">
+            <td class="table__cell"><%= person.full_name %></td>
+            <td class="table__cell"><%= person.company %></td>
+            <td class="table__cell table__cell--actions">
+              <div class="actions">
+                <%= destroy_button person, minimal: true %>
+                <%= edit_button person, frame: '#person-form', minimal: true %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot class="table__footer">
+        <tr class="table__row table__row--footer">
+          <td class="table__cell table__cell--footer table__cell--actions" colspan="4">
+            <div class="actions">
+              <%= new_button :person, frame: '#person-form' %>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="container__column container__column--6" id="person-form" data-frame-src="<%= new_person_path %>">
+
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<%
+  collection ||= nil
+  raise 'Index partial needs a collection parameter (subclass of ActiveRecord::Relation)' unless collection.is_a? ActiveRecord::Relation
+
+  model = collection.klass
+  attributes ||= []
+
+  columns = {}
+
+  [attributes].flatten.each do |attribute|
+    if attribute.is_a? Hash
+      attribute.each do |key, value|
+        columns[key.is_a?(Symbol) ? key.to_s.humanize : key] = value.is_a?(Proc) ? value : -> (record) { record.send value }
+      end
+    else
+      columns[attribute.is_a?(Symbol) ? attribute.to_s.humanize : attribute] = -> (record) { record.send attribute }
+    end
+  end
+
+  model_name = model.to_s.underscore
+  form_id = "#{model_name.split('_').join '-'}"
+%>
+
+<div class="container container--columns container--no-margins">
+  <div class="container__column container__column--6">
+    <table class="table">
+      <thead class="table__header">
+        <tr class="table__row table__row--header">
+          <% columns.each do |attribute, _| %>
+            <th class="table__cell table__cell--header"><%= attribute %></th>
+          <% end %>
+          <th class="table__cell"></th>
+        </tr>
+      </thead>
+      <tbody class="table__body">
+        <% if collection.empty? %>
+          <tr class="table__row">
+            <%= content_tag :td, class: :table__cell, colspan: columns.length + 1 do %>
+              No <%= model_name.humanize.downcase %>
+            <% end %>
+          </tr>
+        <% else %>
+          <% collection.each do |record| %>
+            <tr class="table__row">
+              <% columns.each do |_, value| %>
+                <td class="table__cell"><%= value.call record %></th>
+              <% end %>
+              <td class="table__cell table__cell--actions">
+                <div class="actions">
+                  <%= destroy_button record, minimal: true %>
+                  <%= edit_button record, frame: "##{form_id}", minimal: true %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+      <tfoot class="table__footer">
+        <tr class="table__row table__row--footer">
+          <td class="table__cell table__cell--footer table__cell--actions" colspan="4">
+            <div class="actions">
+              <%= new_button model_name, frame: "##{form_id}" %>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <%= content_tag :div, nil, class: 'container__column container__column--6', id: form_id, data: { 'frame-src': send("new_#{model_name}_path") } %>
+</div>

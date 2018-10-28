@@ -1,0 +1,85 @@
+.button
+  background-color: $white
+  margin: 0
+  min-width: 80px
+  padding: 13px
+  border-radius: 30px
+  border: 2px solid white
+  box-shadow: 0 3px 7px rgba($black, .2)
+  box-sizing: content-box
+  display: inline-block
+  color: $dark-grey
+  font-size: 10px
+  font-weight: bold
+  text-transform: uppercase
+  text-decoration: none
+  letter-spacing: .05em
+  cursor: pointer
+  outline: none
+  line-height: normal
+  text-align: center
+  -webkit-appearance: none
+  transition: .2s
+
+  &:hover, &:focus
+    transform: translateY(-3px)
+    transition-delay: 0
+
+  &:hover
+    box-shadow: 0 8px 20px rgba(black, .2)
+
+  &:active
+    box-shadow: 0 1px 3px rgba(black, .2)
+    transition: .1s
+    transform: translateY(0)
+
+  &:focus
+    box-shadow: 0 10px 30px rgba(black, .2), inset 2px 0 0 white, inset -2px 0 0 white, inset 0 2px 0 white, inset 0 -2px 0 white
+
+  &--primary, &--secondary, &--danger
+    color: white
+
+  @each $type, $color in (primary: $primary, secondary: $secondary, danger: $danger)
+    &--#{$type}
+      background-color: $color
+      border-color: $color
+
+  &--transparent
+    background-color: transparent
+    min-width: 0
+    border-radius: 0
+    color: rgba($dark-grey, .5)
+    padding:
+      left: 0
+      right: 0
+
+    &, &:hover, &:focus, &:active
+      box-shadow: none
+      transform: none
+
+    &:hover, &:focus, &:active
+      color: $dark-grey
+
+  &--selected#{&}--transparent
+    color: $dark-grey
+
+  &--transparent#{&}--primary,
+  &--transparent#{&}--secondary,
+  &--transparent#{&}--danger
+    color: rgba($white, .5)
+
+    &:hover, &:focus, &:active
+      color: $white
+
+  &--transparent#{&}--selected#{&}--primary,
+  &--transparent#{&}--selected#{&}--secondary,
+  &--transparent#{&}--selected#{&}--danger
+    color: $white
+
+  &--round
+    width: 16px
+    height: 16px
+    min-width: 0
+    line-height: 16px
+    font-size: 15px
+

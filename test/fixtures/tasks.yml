@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id                          :bigint(8)        not null, primary key
+#  name                        :string
+#  difficulty                  :integer
+#  minimum_duration_in_seconds :integer
+#  maximum_duration_in_seconds :integer
+#  mission_id                  :bigint(8)
+#  pricing_id                  :bigint(8)
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  position                    :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  difficulty: 1
+  minimum_duration_in_seconds: 1
+  maximum_duration_in_seconds: 1
+  pricing: one
+  mission: one
+
+two:
+  name: MyString
+  difficulty: 1
+  minimum_duration_in_seconds: 1
+  maximum_duration_in_seconds: 1
+  pricing: two
+  mission: two

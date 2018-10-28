@@ -1,0 +1,17 @@
+<%
+  record ||= nil
+  raise 'Edit partial needs a record parameter (ActiveRecord::Base)' unless record.is_a? ActiveRecord::Base
+
+  model_name = record.class.to_s.underscore
+
+  container :medium
+%>
+
+<div class="box animation animation--fade-in-up <%= 'animation--now' if frame? %>">
+  <div class="box__content">
+    <h1 class="box__title">Edit <%= model_name.humanize %></h1>
+  </div>
+  <div class="box__content">
+    <%= render (record.to_partial_path.split('/')[0..-2] << :form).join('/'), model_name.to_sym => record %>
+  </div>
+</div>

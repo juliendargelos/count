@@ -1,0 +1,31 @@
+<% container :small %>
+
+<div class="box animation animation--fade-in-up">
+  <div class="box__content box__content--center box__content--no-border">
+    <div class="brand brand--vertical">
+      <div class="brand__logo">
+        <%= use :logo, :primary %>
+      </div>
+      <h1 class="brand__name brand__name--primary">Count</h1>
+    </div>
+  </div>
+  <div class="box__content">
+    <%= simple_form_for @session do |f| %>
+      <%= f.input :email %>
+      <%= f.input :password %>
+
+      <div class="actions">
+        <%= f.button :submit %>
+      </div>
+    <% end %>
+  </div>
+  <% if @session.errors[:base].any? %>
+    <div class="box__content box__content--animated">
+      <div class="form">
+        <% @session.errors[:base].each do |error| %>
+          <p class="form__error form__error--center"><%= error %></p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

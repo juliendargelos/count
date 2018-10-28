@@ -1,0 +1,27 @@
+<%= simple_form_for mission do |f| %>
+  <div class="form__group">
+    <%= f.input :name %>
+    <%= f.input :beginning_date %>
+  </div>
+  <% if mission.persisted? %>
+    <div class="form__group">
+      <%= f.fields_for :referential do |ff| %>
+        <%= ff.input :man_day_duration %>
+        <%= ff.input :work_per_day_duration %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= f.input :referential, collection: [['Select a referential', '']] + Referential.settings.map { |referential| [referential.name, referential.id] }, selected: '', disabled: '', required: false, include_blank: false %>
+  <% end %>
+
+  <div class="form__group">
+    <%= render 'application/inputs/association', builder: f, attribute: :project %>
+    <%= render 'application/inputs/association', builder: f, attribute: :referent, model: Person %>
+  </div>
+  <%#= f.association :client, collection: [['Select a client', '']] + Client.all.map { |client| [client.full_name, client.id] }, selected: mission.client_id || '', disabled: '', required: false, include_blank: false %>
+
+  <div class="actions">
+    <%= destroy_button mission if mission.persisted? %>
+    <%= f.button :submit %>
+  </div>
+<% end %>

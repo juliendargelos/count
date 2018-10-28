@@ -1,0 +1,27 @@
+$prefixes: webkit, moz, ms, o, base
+$current-prefix: base
+
+@function prefix($string)
+  @if $current-prefix == base
+    @return $string
+  @else
+    @return -#{$current-prefix}-#{$string}
+
+=prefix($rules: null)
+  $current-prefix-was: $current-prefix
+  @each $prefix in $prefixes
+    $current-prefix: $prefix !global
+    @if type-of($rules) == 'map'
+      @each $property, $value in $rules
+        #{prefix($property)}: $value
+    @else
+      @content
+  $current-prefix: $current-prefix-was !global
+
+=prefix-only($prefixes...)
+  @if index($prefixes, $current-prefix)
+    @content
+
+=prefix-except($prefixes...)
+  @if not index($prefixes, $current-prefix)
+    @content

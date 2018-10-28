@@ -1,0 +1,26 @@
+<%= layout 'base', header: true do %>
+  <header class="header">
+    <div class="container container--flex">
+      <%= link_to root_path do %>
+        <%= use :logo, :primary %>
+      <% end %>
+      <div class="header__nav">
+        <nav class="nav">
+          <% [:missions, :people, :users, :settings].each do |resource| %>
+            <span class="nav__item">
+              <%= button_link_to resource, resource, :transparent, (:selected if controller_name == resource.to_s) %>
+            </span>
+          <% end %>
+          <span class="nav__item">
+            <%= button_link_to :logout, destroy_session_path, :primary %>
+          </span>
+          <div id="nav-indicator" class="nav__indicator" data-turbolinks-permanent></div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="<%= container 'margins-vertical' %> animation animation--fade-in animation--now">
+    <%= content { yield } %>
+  </main>
+<% end %>
