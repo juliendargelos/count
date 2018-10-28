@@ -91,7 +91,7 @@ pdf do
   end
 
   # Information box
-  information_box_top = [mission.pricings.count, mission.taxes.count, 1].max*32 + 130
+  information_box_top = [pricings_table_height, taxes_table_height, 76].max + 54
 
   # Duration
   lib_font :texta, style: :black
