@@ -74,6 +74,7 @@ Application.Decoration.shaders = {
     }
 
     uniform float time;
+    uniform float speed;
     uniform float length;
     uniform vec2 spacing;
     uniform vec2 origin;
@@ -86,7 +87,7 @@ Application.Decoration.shaders = {
         0
       );
 
-      p.z = snoise(vec3(p.xy, time/500.))*.5;
+      p.z = snoise(vec3(p.xy, time/500.))*.5*speed;
 
       gl_Position = projectionMatrix*modelViewMatrix*vec4(p, 1.);
 

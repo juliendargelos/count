@@ -8,6 +8,7 @@ Application.Decoration = class Decoration {
       size:    {type: 'f',    value: 3},
       origin:  {type: 'vec2', value: new THREE.Vector2(0, 0)},
       time:    {type: 'f',    value: 0},
+      speed:   {type: 'f',    value: 1},
       length:  {type: 'f',    value: 300},
       spacing: {type: 'vec2', value: new THREE.Vector2(0.02, 0.01)}
     }
@@ -18,6 +19,16 @@ Application.Decoration = class Decoration {
       transparent: true
     });
     this.mesh     = new THREE.Points(this.geometry, this.material)
+    this.mouse    = {
+      x: window.innerWidth/2,
+      y: window.innerHeight/2,
+      previous: {
+        x: window.innerWidth/2,
+        y: window.innerHeight/2
+      },
+      xSpeed: 1,
+      xSign: 1
+    }
     this.frame    = null
     this.animate  = () => {
       this.update().render()
@@ -26,6 +37,10 @@ Application.Decoration = class Decoration {
 
     this.scene.add(this.mesh)
     window.addEventListener('resize', () => this.resize())
+    window.addEventListener('mousemove', event => {
+      this.mouse.x = event.clientX
+      this.mouse.y = event.clientY
+    })
   }
 
   get element() {
@@ -88,8 +103,15 @@ Application.Decoration = class Decoration {
   }
 
   update() {
+    if(this.mouse.x !== this.mouse.previous.x) this.mouse.xSign = this.mouse.x > this.mouse.previous.x ? 1 : -1
+    this.mouse.xSpeed += (this.mouse.xSign*(1 + Math.pow((this.mouse.x - this.mouse.previous.x)*0.05, 2)) - this.mouse.xSpeed)*0.05;
+    var mouseDelta = Math.sqrt(Math.pow(this.mouse.x - this.mouse.previous.x, 2) + Math.pow(this.mouse.y - this.mouse.previous.y, 2))
+    this.mouse.previous.x = this.mouse.x
+    this.mouse.previous.y = this.mouse.y
+
     this.uniforms.time.value += 1
-    this.mesh.rotation.z += 0.005
+    this.uniforms.speed.value += (1 + mouseDelta*0.01 - this.uniforms.speed.value)*0.05
+    this.mesh.rotation.z += 0.005*this.mouse.xSpeed
 
     return this
   }
