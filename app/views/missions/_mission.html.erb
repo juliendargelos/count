@@ -7,7 +7,7 @@
     <div class="box__content">
       <div class="container container--flex container--no-margins container--full-width">
         <h2 class="mission__name box__title">
-          <%= link_to mission, mission %>
+          <%= link_to "#{mission.project} • #{mission}", mission %>
         </h2>
         <div class="actions box__actions">
           <%= destroy_button mission, minimal: true %>
