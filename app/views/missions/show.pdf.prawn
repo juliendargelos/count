@@ -11,11 +11,18 @@ pdf do
 
   fill_color 'ffffff'
   text_transform spaced: true, upcase: true do
-    font_size(14) { text :devis }
-    move_up 6
+    title = 'Devis'
+    font_size(14) { text title }
+    move_up 16.5
+    indent width_of(title)*2.3 + 6 do
+      transparent 0.9 do
+        font_size(7) { text " • #{view.l Date.today, format: :long}" }
+      end
+    end
+    move_down 1
 
     font_size 7 do
-      transparent(0.9) { text "#{mission.project} • #{mission} • #{view.l(Date.today, format: :long)}" }
+      transparent(0.9) { text "#{mission.company} / #{mission.project} / #{mission}" }
       move_cursor_to inner_height
       text mission.user.full_name, align: :right
       transparent(0.9) { text "#{mission.user.phone} • #{mission.user.email}", align: :right }

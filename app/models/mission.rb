@@ -24,6 +24,7 @@ class Mission < ApplicationRecord
   belongs_to :referent, class_name: 'Person'
   belongs_to :project
   has_one :referential, dependent: :destroy
+  has_one :company, through: :project
   has_many :pricings, dependent: :destroy
   has_many :taxes, dependent: :destroy
   has_many :tasks, dependent: :destroy
