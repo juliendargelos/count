@@ -33,8 +33,6 @@ class PeopleController < ApplicationController
           error :could_not_create_person
           render :new
         end
-
-        redirect_to companies_path
       end
     end
   end
