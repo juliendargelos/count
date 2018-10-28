@@ -36,7 +36,8 @@ Application.Form = class Form {
 
   get request() {
     var request = new Request(this.url, this.method)
-    request.form = this.element
+    request.data.form = this.element
+    request.data.authenticity_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
     return request
   }
@@ -45,14 +46,12 @@ Application.Form = class Form {
     return this.sendingCounter !== 0
   }
 
-  send(callback) {
+  send() {
     this.sendingCounter++
-    var promise = this.request.send().then(() => {
-      callback.call(this)
+    return this.request.send().then(response => {
       this.sendingCounter--
+      return response
     })
-
-    return promise
   }
 
   static for(element) {

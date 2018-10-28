@@ -17,13 +17,14 @@
   end
 %>
 
-<div class="form__field form__field--association form__association">
+<%= content_tag :div, class: 'form__field form__field--association form__association', data: { model: model.to_s.parameterize, attribute: by, path: send("new_#{model.to_s.parameterize}_path") } do %>
   <%= builder.hidden_field foreign_key, class: 'form__association-key' %>
-  <%= text_field_tag nil, record.send(by), class: 'form__input form__input--string form__association-input', placeholder: ' ' %>
+  <%= text_field_tag nil, record.send(by), name: :none, class: 'form__input form__input--string form__association-input', placeholder: ' ', autocomplete: :false, autocomplete: :off, autocorrect: :off, autocapitalize: :off, spellcheck: :false %>
   <%= label_tag attribute, nil, class: :form__label %>
   <ul class="form__association-list">
     <% collection.each do |record| %>
       <li class="form__association-item" data-value="<%= record.id %>"><%= record.send by %></li>
     <% end %>
+    <li class="form__association-item form__association-item--new"></li>
   </ul>
-</div>
+<% end %>

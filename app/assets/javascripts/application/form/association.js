@@ -5,10 +5,47 @@ Application.Form.Association = class Association {
     this.key = this.element.querySelector('.form__association-key')
     this.list = this.element.querySelector('.form__association-list')
     this.items = Array.prototype.slice.call(this.list.querySelectorAll('.form__association-item'))
+    this.newItem = this.list.querySelector('.form__association-item--new')
     var currentValue = this.key.value
     this.filled = false
+    this.popin = new Application.Popin.Frame({
+      src: this.path,
+      onload: frame => {
+        var form = Application.Form.for(frame.querySelector('form'))
+        form.element.action += '.json'
+
+        form.element.addEventListener('submit', event => {
+          event.preventDefault()
+          form.send().then(response => {
+            var json = response.json
+            if(json.error) Application.NotificationList.error(json.error)
+            else {
+              var item = document.createElement('li')
+              item.className = 'form__association-item'
+              item.setAttribute('data-value', json.id)
+              item.textContent = json[this.attribute]
+              item.search = this.constructor.normalize(item.textContent)
+              item.addEventListener('mousedown', () => { this.select(item) })
+              this.items.push(item)
+              this.list.insertBefore(item, this.list.lastChild)
+              this.selected = item
+              this.select()
+              this.popin.close()
+            }
+          })
+        })
+
+        var input = form.element.querySelector(`#${this.model}_${this.attribute === 'to_s' ? 'name' : this.attribute}`)
+        if(!input) input = form.element.querySelector('input:not([type="hidden"]), textarea')
+        if(input) {
+          input.value = this.input.value
+          input.focus()
+        }
+      }
+    })
     this.init()
     this.key.value = currentValue
+    this.updateNewItem()
     this.constructor.all.push(this)
   }
 
@@ -48,6 +85,18 @@ Application.Form.Association = class Association {
     this.element.classList[v ? 'add' : 'remove']('form__association--filled')
   }
 
+  get path() {
+    return this.element.getAttribute('data-path')
+  }
+
+  get attribute() {
+    return this.element.getAttribute('data-attribute')
+  }
+
+  get model() {
+    return this.element.getAttribute('data-model')
+  }
+
   init() {
     this.input.element.addEventListener('keydown', event => {
       if(['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(event.key)) {
@@ -55,13 +104,14 @@ Application.Form.Association = class Association {
         event.stopPropagation()
       }
 
-      this.key(event.key)
+      this.keydown(event.key)
     })
 
     this.input.element.addEventListener('focus', () => this.filter())
 
     this.input.watch(() => {
       this.filled = false
+      this.updateNewItem()
       this.filter()
     })
 
@@ -71,7 +121,7 @@ Application.Form.Association = class Association {
     })
   }
 
-  key(key) {
+  keydown(key) {
     switch(key) {
       case 'ArrowDown':
         this.down()
@@ -92,7 +142,7 @@ Application.Form.Association = class Association {
     var terms = this.terms
 
     this.items.forEach(item => {
-      item.classList[!terms || item.search.indexOf(terms) == -1 ? 'add' : 'remove']('form__association-item--hidden')
+      item.classList[!terms || (item !== this.newItem && item.search.indexOf(terms) == -1) ? 'add' : 'remove']('form__association-item--hidden')
     })
 
     this.selected = this.visibleItems[0]
@@ -108,12 +158,20 @@ Application.Form.Association = class Association {
 
   select() {
     var selected = this.selected
+
     if(selected) {
-      this.input.value = selected.textContent
-      this.key.value = selected.getAttribute('data-value')
+      if(selected === this.newItem) this.popin.open()
+      else {
+        this.input.value = selected.textContent
+        this.key.value = selected.getAttribute('data-value')
+        this.filled = true
+        this.selected = null
+      }
     }
-    this.filled = true
-    this.selected = null
+  }
+
+  updateNewItem() {
+    this.newItem.textContent = this.input.value
   }
 
   static normalize(string) {

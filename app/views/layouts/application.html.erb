@@ -6,7 +6,7 @@
       <% end %>
       <div class="header__nav">
         <nav class="nav">
-          <% [:missions, :people, :users, :settings].each do |resource| %>
+          <% [:missions, :projects, :companies, :people, :users, :settings].each do |resource| %>
             <span class="nav__item">
               <%= button_link_to resource, resource, :transparent, (:selected if controller_name == resource.to_s) %>
             </span>

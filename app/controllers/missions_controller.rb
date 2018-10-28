@@ -98,6 +98,7 @@ class MissionsController < ApplicationController
       :ending_date,
       :referential_id,
       :referent_id,
+      :project_id,
       :notes,
       referential_attributes: [
         :id,

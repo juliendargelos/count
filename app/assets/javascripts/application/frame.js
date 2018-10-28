@@ -69,6 +69,7 @@ Application.Frame = class Frame {
             request.send().then(response => {
               frame.innerHTML = response.text
               Application.init(frame)
+              if(typeof frame.onloadFrame === 'function') frame.onloadFrame(frame)
             })
           }, delay)
         })

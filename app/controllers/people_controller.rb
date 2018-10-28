@@ -16,12 +16,26 @@ class PeopleController < ApplicationController
   def create
     @person = Person.new person_params
 
-    if @person.save
-      success :person_created
-      redirect_to people_path
-    else
-      error :could_not_create_person
-      render :new
+    respond_to do |format|
+      format.json do
+        if @person.save
+          render json: @person
+        else
+          render json: { error: @person.errors.full_messages.first }
+        end
+      end
+
+      format.html do
+        if @person.save
+          success :person_created
+          redirect_to people_path
+        else
+          error :could_not_create_person
+          render :new
+        end
+
+        redirect_to companies_path
+      end
     end
   end
 
@@ -53,6 +67,6 @@ class PeopleController < ApplicationController
 
   def person_params
 
-    params.require(:person).permit :first_name, :last_name, :company, :email, :phone, :country, :city, :zipcode, :address
+    params.require(:person).permit :first_name, :last_name, :company_id, :email, :phone, :country, :city, :zipcode, :address
   end
 end

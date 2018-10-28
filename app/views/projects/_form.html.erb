@@ -1,0 +1,5 @@
+<%= form_view_for project do |f| %>
+  <%= f.input :name %>
+  <%= render 'application/inputs/association', builder: f, attribute: :company %>
+  <%= f.input :notes, partial: :markdown if project.persisted? %>
+<% end %>

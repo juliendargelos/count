@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resource :settings, only: :show
   resources :users, except: :show
   resources :companies, except: :show
+  resources :projects, except: :show
   resources :people, except: :show
   resources :pricings, only: [:index, :update, :create, :destroy]
   resources :referentials, only: [:index, :update, :create, :destroy]

@@ -2,6 +2,7 @@ Application.Popin = class Popin {
   constructor(options = {}) {
     this.element = document.importNode(this.constructor.template, true)
     this.elements = {
+      box: this.element.querySelector('.popin__box'),
       title: this.element.querySelector('.popin__title'),
       content: this.element.querySelector('.popin__content'),
       actions: this.element.querySelector('.popin__actions'),

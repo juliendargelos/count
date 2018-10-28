@@ -8,10 +8,11 @@
 #  beginning_date :date
 #  ending_date    :date
 #  user_id        :bigint(8)
-#  client_id      :bigint(8)
+#  referent_id    :bigint(8)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  notes          :text
+#  project_id     :bigint(8)
 #
 
 require 'test_helper'

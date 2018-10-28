@@ -11,9 +11,9 @@
 #  city       :string
 #  zipcode    :string
 #  address    :string
-#  company    :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  company_id :bigint(8)
 #
 
 class Person < ApplicationRecord
@@ -24,6 +24,7 @@ class Person < ApplicationRecord
   validates :phone, phone: true, allow_blank: true
   validates :zipcode, zipcode: true, allow_blank: true
 
+  belongs_to :company
   has_many :missions, foreign_key: :referent_id, dependent: :destroy
   has_default country: 'France', city: 'Paris'
   has_phone

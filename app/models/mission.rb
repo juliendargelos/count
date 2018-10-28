@@ -8,10 +8,11 @@
 #  beginning_date :date
 #  ending_date    :date
 #  user_id        :bigint(8)
-#  client_id      :bigint(8)
+#  referent_id    :bigint(8)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  notes          :text
+#  project_id     :bigint(8)
 #
 
 class Mission < ApplicationRecord
@@ -21,6 +22,7 @@ class Mission < ApplicationRecord
 
   belongs_to :user
   belongs_to :referent, class_name: 'Person'
+  belongs_to :project
   has_one :referential, dependent: :destroy
   has_many :pricings, dependent: :destroy
   has_many :taxes, dependent: :destroy

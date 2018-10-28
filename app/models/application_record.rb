@@ -11,4 +11,16 @@ class ApplicationRecord < ActiveRecord::Base
       end
     end
   end
+
+  def as_json(options = nil)
+    options = {} unless options.is_a? Hash
+    options = options.symbolize_keys
+    unless options[:methods].is_a? Array
+      options[:methods] = options[:methods].present? ? [options[:methods]] : []
+    end
+
+    options[:methods] << :to_s
+
+    super(options)
+  end
 end

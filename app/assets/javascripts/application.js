@@ -116,11 +116,11 @@ class Application {
         this.Header.init(scope)
         this.Nav.init(scope)
         this.NotificationList.init(scope)
+        this.Popin.init(scope)
         this.Frame.init(scope)
         this.Form.init(scope)
         this.Toggler.init(scope)
         this.Focuser.init(scope)
-        this.Popin.init(scope)
         this.Confirm.init(scope)
         this.Method.init(scope)
       },

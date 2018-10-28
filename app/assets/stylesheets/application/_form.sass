@@ -135,6 +135,18 @@
     &--hidden
       display: none
 
+    &--new
+      &::before
+        content: 'Create:'
+        margin-right: 5px
+        display: inline-block
+        font-size: 10px
+        font-weight: bold
+        text-transform: uppercase
+        text-decoration: none
+        letter-spacing: .05em
+        vertical-align: middle
+
     &:not(&--selected):hover
       background-color: rgba($thin-grey, .4)
 
