@@ -1,7 +1,7 @@
 ![Decoration](https://user-images.githubusercontent.com/3743321/40796764-6dcdf06a-6506-11e8-9fc2-c555ed907192.png)
 
 <p align="center">
-  <img width="60" height="50" src="https://cdn.jsdelivr.net/gh/juliendargelos/count@ed294754/app/assets/images/logo.svg">
+  <img width="60" height="50" src="https://rawcdn.githack.com/juliendargelos/count/43e066474e9aa75494097181b60a93e7b29d7362/app/assets/images/logo.svg">
 </p>
 <h2 align="center">C&nbsp;&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;&nbsp;U&nbsp;&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;&nbsp;T<br><br></h2>
 
