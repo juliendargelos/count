@@ -215,7 +215,7 @@ pdf do
 
           float do
             fill_color color_tertiary
-            text "#{mission.user.siret.present? && "Siret #{mission.user.siret} • "} TVA non applicable, art. 293 B du CGI"
+            text "#{mission.user.siret.present? ? "Siret #{mission.user.siret} • " : ''} TVA non applicable, art. 293 B du CGI"
           end
         else
           text ' '
