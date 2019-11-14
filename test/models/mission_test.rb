@@ -13,7 +13,7 @@
 #  updated_at     :datetime         not null
 #  notes          :text
 #  project_id     :bigint(8)
-#  invoice_number :integer          not null
+#  invoice_number :integer
 #
 
 require 'test_helper'
