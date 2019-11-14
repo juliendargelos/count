@@ -1,9 +1,7 @@
 class MissionsController < ApplicationController
-  skip_before_action :redirect_to_new_session_path, only: :show
-  before_action(only: :show) { redirect_to_new_session_path unless public? || session_exists? }
+  skip_before_action :redirect_to_new_session_path, if: :export?, only: :show
   before_action :set_mission, only: [:show, :edit, :update, :destroy, :reorder, :compute]
   before_action :set_scope, only: :index
-  before_action :redirect_to_public_path_in_pdf_format, only: :show, if: :public_and_not_pdf_format_or_not_public_and_pdf_format?
 
   def index
     @missions = Mission.send @scope
@@ -13,8 +11,17 @@ class MissionsController < ApplicationController
     not_found and return unless @mission.present?
 
     respond_to do |format|
-      format.pdf { I18n.locale = :fr }
-      format.html
+      if export?
+        format.pdf do
+          filename = "#{@mission.company}-#{@mission.project}-#{@mission}".parameterize + '.pdf'
+          response.set_header 'Content-Disposition', 'attachment; filename="' + filename + '"'
+          I18n.locale = :fr
+          @invoice = params[:export] == 'invoice'
+          @quotation = !@invoice
+        end
+      else
+        format.html
+      end
     end
   end
 
@@ -84,7 +91,7 @@ class MissionsController < ApplicationController
   protected
 
   def set_mission
-    @mission = public? ? Mission.find_by(uuid: params[:uuid]) : Mission.find(params[:id])
+    @mission = export? ? Mission.find_by(uuid: params[:uuid]) : Mission.find(params[:id])
   end
 
   def set_scope
@@ -120,15 +127,7 @@ class MissionsController < ApplicationController
     params.require(:mission).permit tasks: [:id, :position]
   end
 
-  def public?
-    params.key? :uuid
-  end
-
-  def public_and_not_pdf_format_or_not_public_and_pdf_format?
-    (public? && !request.format.pdf?) || (!public? && request.format.pdf?)
-  end
-
-  def redirect_to_public_path_in_pdf_format
-    redirect_to public_mission_path(uuid: @mission.uuid, format: :pdf)
+  def export?
+    request.path_parameters.key? :export
   end
 end

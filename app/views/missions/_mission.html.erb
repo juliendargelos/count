@@ -10,9 +10,10 @@
           <%= link_to "#{mission.project} • #{mission}", mission %>
         </h2>
         <div class="actions box__actions">
-          <%= destroy_button mission, minimal: true %>
+          <%= button_link_to :pdf, mission_export_path(uuid: mission.uuid, export: :quotation, format: :pdf), :round, icon: 'file-pdf' %>
+          <%= button_link_to :pdf, mission_export_path(uuid: mission.uuid, export: :invoice, format: :pdf), :secondary, :round, icon: 'file-invoice' %>
           <%= edit_button mission, minimal: true %>
-          <%= button_link_to :pdf, public_mission_path(uuid: mission.uuid, format: :pdf), :secondary, :round, icon: 'file-pdf' %>
+          <%= destroy_button mission, minimal: true %>
         </div>
       </div>
     </div>

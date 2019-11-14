@@ -36,4 +36,8 @@ class Person < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def full_address
+    [address, zipcode, city].select(&:present?).join ' '
+  end
 end

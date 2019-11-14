@@ -10,6 +10,7 @@
 #  phone           :string           default(""), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  siret           :string
 #
 
 class User < ApplicationRecord

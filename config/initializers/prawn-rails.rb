@@ -36,15 +36,19 @@ class Prawn::Document
     text string.to_s.split('').join(' '), options
   end
 
-  alias_method :base_text, :text
-  def text(string, options = {})
+  def transformed_text(string)
     string = string.to_s
 
     string = string.humanize if @text_transform[:humanize]
     string = string.split('').join ' ' if @text_transform[:spaced]
     string = string.upcase if @text_transform[:upcase]
 
-    base_text string, options
+    string
+  end
+
+  alias_method :base_text, :text
+  def text(string, options = {})
+    base_text transformed_text(string), options
   end
 
   [:top, :right, :bottom, :left].each do |name|

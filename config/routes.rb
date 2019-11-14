@@ -13,12 +13,19 @@ Rails.application.routes.draw do
   resources :pricings, only: [:index, :update, :create, :destroy]
   resources :referentials, only: [:index, :update, :create, :destroy]
   resources :taxes, only: [:index, :update, :create, :destroy]
+
   resources :missions do
     # get '/(:scope)' => 'missions#index', on: :collection, as: '', constraints: { scope: /(?:in-progress|ended)?/ }
     # get '/' => 'missions#show', on: :member
     post 'compute', on: :member
   end
-  get 'missions/public/:uuid' => 'missions#show', as: :public_mission
+
+  get(
+    'missions/:uuid/:export' => 'missions#show',
+    as: :mission_export,
+    export: /(?:quotation|invoice)/
+  )
+
   resources :tasks, only: [:create, :update, :destroy] do
     post 'compute', on: :collection
   end

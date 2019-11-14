@@ -8,8 +8,10 @@
 
     <fieldset>
       <%= f.input :phone %>
-      <%= f.input :password %>
-      <%= f.input :password_confirmation %>
+      <%= f.input :password, required: !user.persisted? %>
+      <%= f.input :password_confirmation, required: !user.persisted? %>
     </fieldset>
   </div>
+
+  <%= f.input :siret %>
 <% end %>
