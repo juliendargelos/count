@@ -13,7 +13,6 @@
 #  updated_at     :datetime         not null
 #  notes          :text
 #  project_id     :bigint(8)
-#  invoice_number :integer
 #
 
 class Mission < ApplicationRecord
@@ -38,7 +37,6 @@ class Mission < ApplicationRecord
   )
 
   before_save :copy_referential, if: :referential_setting?
-  before_validation :set_invoice_number, if: :invoice_number_blank?
 
   scope :chronological, -> (by: :beginning) { order "#{by}_date": :desc }
   scope :price_in_cents, -> { sum &:price_in_cents }
@@ -57,7 +55,6 @@ class Mission < ApplicationRecord
   validates :name, presence: true
   validates :beginning_date, presence: true
   validates :uuid, presence: true, uniqueness: true
-  validates :invoice_number, presence: true, uniqueness: true
 
   accepts_nested_attributes_for :referential
   accepts_nested_attributes_for :tasks
@@ -122,13 +119,5 @@ class Mission < ApplicationRecord
 
   def referential_setting?
     self.referential&.setting?
-  end
-
-  def invoice_number_blank?
-    invoice_number.blank?
-  end
-
-  def set_invoice_number
-    self.invoice_number = Mission.count + 1
   end
 end

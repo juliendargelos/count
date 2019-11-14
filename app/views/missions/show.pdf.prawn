@@ -203,7 +203,7 @@ pdf do
 
         if invoice
           fill_color color_primary
-          invoice_number = "Facture ##{'%04d' % mission.invoice_number}"
+          invoice_number = "Facture ##{'%04d' % mission.id}"
 
           float do
             text invoice_number
