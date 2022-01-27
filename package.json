@@ -3,6 +3,6 @@
   "private": true,
   "dependencies": {
     "open-request-js": "^1.0.35",
-    "three": "^0.91.0"
+    "three": "^0.137.0"
   }
 }
